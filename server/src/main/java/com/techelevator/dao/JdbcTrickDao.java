@@ -39,6 +39,61 @@ public class JdbcTrickDao implements TrickDao {
         return tricks;
     }
 
+    public List<Trick> fetchKnownTricks() {
+        List<Trick> tricks = new ArrayList<>();
+        String sql = "SELECT * " +
+                "FROM tricks " +
+                "WHERE known = 'Yes'";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while(results.next()) {
+                tricks.add(mapRowToTrick(results));
+            }
+        }
+        catch (Exception e) {
+            throw new DaoException("There was a problem fetching a list of known tricks");
+        }
+
+        return tricks;
+    }
+
+    public List<Trick> fetchUnknownTricks() {
+        List<Trick> tricks = new ArrayList<>();
+        String sql = "SELECT * " +
+                     "FROM tricks " +
+                     "WHERE known = 'No'";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+            while(results.next()) {
+                tricks.add(mapRowToTrick(results));
+            }
+        }
+        catch (Exception e) {
+            throw new DaoException("There was a problem fetching a list of unknown tricks", e);
+        }
+
+        return tricks;
+    }
+
+    public Trick createTrick(Trick trick) {
+
+        String sql = "INSERT INTO tricks(name, flip_or_shuv, stance, known) " +
+                     "VALUES(? ,?, ?, ?) " +
+                     "RETURNING trick_id";
+
+        try {
+            int id = jdbcTemplate.queryForObject(sql, int.class, trick.getName(), trick.getFlipOrShuv(), trick.getStance(), trick.getKnown());
+            trick.setId(id);
+        }
+        catch (Exception e) {
+            throw new DaoException("There was an issue with adding the trick", e);
+        }
+
+        return trick;
+    }
+
     private Trick mapRowToTrick(SqlRowSet row) {
         Trick trick = new Trick();
         trick.setId(row.getInt("trick_id"));

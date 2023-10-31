@@ -6,5 +6,13 @@ import java.util.List;
 public interface TrickDao {
     public List<Trick> fetchAllTricks();
 
+    public List<Trick> fetchUnknownTricks();
+
+    public List<Trick> fetchKnownTricks();
+
+    public Trick createTrick(Trick trick);
+
+
+
 
 }
