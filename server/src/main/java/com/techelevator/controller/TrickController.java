@@ -27,6 +27,7 @@ public class TrickController {
         return tricks;
     }
 
+    // Fetch trick by id
     @RequestMapping(path = "/tricks/{id}", method = RequestMethod.GET)
     public Trick fetchTrickById(@PathVariable int id) {
         Trick fetchedTrick = null;
@@ -67,6 +68,7 @@ public class TrickController {
         return addedTrick;
     }
 
+    // Delete trick by id in the database
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequestMapping(path="/tricks/{id}", method=RequestMethod.DELETE)
     public void delete(@PathVariable int id) {
