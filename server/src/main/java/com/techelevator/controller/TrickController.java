@@ -5,6 +5,7 @@ import com.techelevator.model.Trick;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -24,6 +25,18 @@ public class TrickController {
         tricks = dao.fetchAllTricks();
 
         return tricks;
+    }
+
+    @RequestMapping(path = "/tricks/{id}", method = RequestMethod.GET)
+    public Trick fetchTrickById(@PathVariable int id) {
+        Trick fetchedTrick = null;
+
+        fetchedTrick = dao.fetchTrickById(id);
+        if (fetchedTrick == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There was no trick found with the given id.");
+        }
+
+        return fetchedTrick;
     }
 
     // Fetch a list of unknown tricks
@@ -50,10 +63,18 @@ public class TrickController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/tricks", method = RequestMethod.POST)
     public Trick create(@Valid @RequestBody Trick trick) {
-
         Trick addedTrick = dao.createTrick(trick);
         return addedTrick;
+    }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(path="/tricks/{id}", method=RequestMethod.DELETE)
+    public void delete(@PathVariable int id) {
+        int affectedRows = dao.deleteTrick(id);
+
+        if (affectedRows == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No trick with the id given was found.");
+        }
     }
 
 

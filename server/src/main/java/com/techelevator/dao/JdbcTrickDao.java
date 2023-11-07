@@ -39,6 +39,24 @@ public class JdbcTrickDao implements TrickDao {
         return tricks;
     }
 
+    public Trick fetchTrickById(int id) {
+        String sql = "SELECT * FROM tricks WHERE trick_id = ?";
+        Trick fetchedTrick = null;
+
+        try {
+            SqlRowSet result =  jdbcTemplate.queryForRowSet(sql, id);
+            if (result.next()) {
+                fetchedTrick = mapRowToTrick(result);
+            }
+        }
+        catch(Exception e) {
+            throw new DaoException("There was an issue with fetching the trick by the id given.", e);
+        }
+
+        return fetchedTrick;
+    }
+
+
     public List<Trick> fetchKnownTricks() {
         List<Trick> tricks = new ArrayList<>();
         String sql = "SELECT * " +
@@ -92,6 +110,20 @@ public class JdbcTrickDao implements TrickDao {
         }
 
         return trick;
+    }
+
+    public int deleteTrick(int id) {
+        String sql = "DELETE FROM tricks WHERE trick_id = ?";
+        int affectedRows;
+
+        try {
+            affectedRows = jdbcTemplate.update(sql, id);
+        }
+        catch (Exception e) {
+            throw new DaoException("There was an error deleting the trick.", e);
+        }
+
+        return affectedRows;
     }
 
     private Trick mapRowToTrick(SqlRowSet row) {
