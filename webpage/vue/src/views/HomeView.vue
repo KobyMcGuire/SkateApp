@@ -1,11 +1,18 @@
 <template>
-  <div class="home">
-    <h1>Home</h1>
-    <p>You must be authenticated to see this</p>
+  <div id="home">
+    <the-welcome/>
   </div>
 </template>
 
 <script>
+import TheWelcome from '../components/TheWelcome.vue';
+
 export default {
+  components : {
+    TheWelcome
+  }
 };
 </script>
+
+<style scoped>
+</style>
