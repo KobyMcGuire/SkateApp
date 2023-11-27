@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html , body {
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    display: grid;
+    grid-template-rows: 1fr 2fr 1fr;
+
+    width: 700px;
+    height: 500px;
+
+    border: 1px solid white;
+    border-radius: 5px;
+
+    background-color: #bae6fd;
+}
