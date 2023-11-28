@@ -14,12 +14,13 @@ export default {};
 
 <style scoped>
 a {
-
     border: px solid black;
     border-radius: 5px;
 
     margin: 5px;
     padding: 3px;
+
+    font-size: 3rem;
 
     text-decoration: none;
 }
@@ -30,6 +31,8 @@ nav a::onhover {
 
 p {
     display: inline;
+
+    font-size: 3rem;
 }
 
 </style>

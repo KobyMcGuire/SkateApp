@@ -29,6 +29,8 @@ export default {
 }
 
 #skate-trainer {
+  background-color: #f1f5f9;
+
   min-height: 100vh;
 
   display: flex;

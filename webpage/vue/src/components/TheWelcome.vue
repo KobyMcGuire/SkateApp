@@ -1,10 +1,17 @@
 <template>
   <div id="welcome">
-    <h2>Welcome to your personal skate trainer</h2>
+    <h1>Welcome to your bag of tricks</h1>
+    <div class="home-images">
+      <img class="tre" src="../assets/treFlipPic.PNG" alt="">
+      <img class="grab" src="../assets/grabPic.PNG" alt="">
+      <img class="smith" src="../assets/smithGrind.PNG" alt="">
+    </div>
   </div>
 </template>
 
 <script>
+import { assert } from '@vue/compiler-core';
+
 export default {
 
 }
@@ -12,18 +19,49 @@ export default {
 
 <style scoped>
 #welcome {
-    width: 1000px;
-    height: 500px;
+  min-width: 80vw;
 
-    background-color: #fef3c7;
-    box-shadow: 15px 15px 20px rgb(99, 99, 99);
-
-    border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
-h2 {
-    text-align: center;
+h1 {
+  width: 500px;
 
-    padding-top: 10px;
+  font-size: 5rem;
+
+  text-align: center;
+  }
+
+  img {
+    border-radius: 3px; 
+
+    position: relative;
+  }
+
+.tre {
+  width: 800px;
+  height: auto;
+
+  z-index: 1;
+}
+
+.grab {
+  height: 500px;
+  width: auto;
+
+  z-index: 2;
+  bottom: 5%;
+  left: -10%;
+
+}
+.smith {
+  height: 500px;
+  width: auto;
+
+  z-index: 3;
+  left: 25%;
+  bottom: 10%;
+
 }
 </style>
