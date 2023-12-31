@@ -1,15 +1,20 @@
 <template>
   <div>
-    <ul>
-      <li v-for="trick in tricks" :key="trick.id"> {{ trick.name }} </li>
-    </ul>
+
+    <div class="trick-cards-container">
+      <trick-card v-for="trick in tricks" :key="trick.id" :trick="trick"></trick-card>
+    </div>
+
   </div>
 </template>
 
 <script>
 import TrickService from '../services/TrickService';
+import TrickCard from '../components/TrickCard.vue';
 
 export default {
+  components : {TrickCard},
+
   data() {
     return {
       tricks : [],
@@ -19,6 +24,7 @@ export default {
   created() {
     TrickService.getTricks()
     .then((response) => {
+      console.log(response.data);
       this.tricks = response.data;
     })
     .catch((error) => {
@@ -37,6 +43,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.trick-cards-container {
+  border: 1px solid black;
+  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px ;
+}
 
 </style>
