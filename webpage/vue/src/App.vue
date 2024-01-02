@@ -28,14 +28,42 @@ export default {
   box-sizing: border-box;
 }
 
+.error-message {
+  background-color: #fca5a5;
+
+  padding: 5px;
+
+  border-radius: 5px;
+
+  margin-bottom: 5px;
+}
+
 button {
   border: none;
   border-radius: 5px;
 
-  transition: all 0.3s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 button:hover {
+  border: 2px solid black;
+  transform: scale(1.025);
+
+  cursor: pointer;
+}
+
+input[type="submit"] {
+  padding: 5px;
+
+  border: none;
+  border-radius: 5px;
+
+  background-color: #86efac;
+
+  transition: all 0.1s ease-in-out;
+}
+
+input[type="submit"]:hover {
   border: 2px solid black;
   transform: scale(1.025);
 

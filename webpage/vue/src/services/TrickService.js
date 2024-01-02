@@ -8,6 +8,10 @@ export default {
 
     getTricks() {
         return http.get("/tricks");
+    },
+
+    createTrick(trick) {
+        return http.post("/tricks", trick);
     }
 
 
