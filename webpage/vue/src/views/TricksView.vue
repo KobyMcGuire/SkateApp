@@ -1,23 +1,40 @@
 <template>
-    <div class="cards-column-container">
-      <h2>Known Tricks</h2>
+  
+  <button class="create-trick-button" v-on:click="handleCreateTrick">
+    Create a New Trick
+  </button>
+
+  <div class="new-trick-form" :class="{'is-showing' : showNewTrickForm}" v-if="showNewTrickForm">
+    <p>This form is showing</p>
+  </div>
+
+  <div class="cards-column-container">
+
+    <div>
+      <h2 class="tricks-header">Known Tricks</h2>
       <div class="trick-cards-container">
         <trick-card
           v-for="trick in knownTricks"
           :key="trick.id"
           :trick="trick"
+          class="trick-card"
         ></trick-card>
       </div>
+    </div>
 
-      <h2>Unknown Tricks</h2>
+    <div>
+      <h2 class="tricks-header">Unknown Tricks</h2>
       <div class="trick-cards-container">
         <trick-card
           v-for="trick in unknownTricks"
           :key="trick.id"
           :trick="trick"
+          class="trick-card"
         ></trick-card>
       </div>
     </div>
+
+  </div>
 </template>
 
 <script>
@@ -32,6 +49,7 @@ export default {
       tricks: [],
       knownTricks: [],
       unknownTricks: [],
+      showNewTrickForm: false,
     };
   },
 
@@ -61,18 +79,27 @@ export default {
         }
       });
     },
+
+    handleCreateTrick() {
+      // Show new trick form
+      this.showNewTrickForm = !this.showNewTrickForm;
+    },
   },
 };
 </script>
 
 <style scoped>
+.create-trick-button {
+  display: block;
 
+  background-color: grey;
+
+  padding: 5px;
+}
 .cards-column-container {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 20px ;
 
   min-width: 80%;
 }
@@ -82,11 +109,22 @@ export default {
 
   padding: 5px;
 
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   gap: 10px;
-
-  min-width: 100%;
 }
+
+.tricks-header {
+  text-align: center;
+}
+
+.new-trick-form {
+  border: 1px solid black;
+
+
+  min-width: 10%;
+  min-height: 100px;
+}
+
 </style>

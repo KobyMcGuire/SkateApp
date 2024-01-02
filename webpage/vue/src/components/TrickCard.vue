@@ -19,7 +19,8 @@ export default {
 
     padding: 5px;
 
-    min-width: 15%;
+    /* Change this to percent? */
+    min-width: 150px;
 
     text-align: center;
 }

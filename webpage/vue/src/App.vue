@@ -28,6 +28,20 @@ export default {
   box-sizing: border-box;
 }
 
+button {
+  border: none;
+  border-radius: 5px;
+
+  transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  border: 2px solid black;
+  transform: scale(1.025);
+
+  cursor: pointer;
+}
+
 #skate-trainer {
   background-color: #f1f5f9;
 
@@ -35,8 +49,9 @@ export default {
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content:flex-start;
   align-items: center;
+  gap: 100px  ;
 }
 
 </style>
