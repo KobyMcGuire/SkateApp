@@ -1,32 +1,40 @@
 <template>
-  <div id="skate-trainer">
-    <the-header/>
-    <router-view />
-    <the-footer/>
-  </div>
+  <v-app>
+
+    <v-navigation-drawer
+        expand-on-hover
+        rail
+      >
+        <v-list>
+          <v-list-item
+            prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+            title="Sandra Adams"
+            subtitle="sandra_a88@gmailcom"
+          ></v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item prepend-icon="mdi-folder" title="My Files" value="myfiles"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
+          <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+    
+  </v-app>
 </template>
 
 <script>
-import TheHeader from './components/TheHeader.vue';
-import TheFooter from './components/TheFooter.vue';
 
-export default {
 
-  components : {
-    TheHeader,
-    TheFooter
-  },
+export default {  
 
-}
+
+};
 </script>
 
 <style>
-* {
-  font-family:'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', 'sans-serif';
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .error-message {
   background-color: #fca5a5;
@@ -69,17 +77,4 @@ input[type="submit"]:hover {
 
   cursor: pointer;
 }
-
-#skate-trainer {
-  background-color: #f1f5f9;
-
-  min-height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content:flex-start;
-  align-items: center;
-  gap: 100px  ;
-}
-
 </style>

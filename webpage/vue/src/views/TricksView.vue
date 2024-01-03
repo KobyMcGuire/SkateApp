@@ -96,7 +96,6 @@ export default {
   created() {
     TrickService.getTricks()
       .then((response) => {
-        console.log(response.data);
         this.filterTricks(response.data);
         this.tricks = response.data;
       })
@@ -136,8 +135,6 @@ export default {
 
         TrickService.createTrick(this.newTrick)
         .then((response) => {
-          console.log("Submit Successful");
-
           // Reset New Trick Object
           this.newTrick = {};
         })
