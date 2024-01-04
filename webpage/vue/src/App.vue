@@ -13,6 +13,13 @@
 
       <v-list density="compact" nav>
         <v-list-item
+          prepend-icon="mdi-home"
+          title="Home"
+          value="home"
+          to="/"
+          link
+        ></v-list-item>
+        <v-list-item
           prepend-icon="mdi-skateboard"
           title="My Bag of Tricks"
           value="myTricks"

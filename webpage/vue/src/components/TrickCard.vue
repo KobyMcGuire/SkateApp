@@ -1,28 +1,17 @@
 <template>
-    <div class="trick-card">
-        <p>{{ trick.name }}</p>
-        <p>{{  trick.stance }}</p>
-    </div>
+  <v-card>
+    <v-card-item>
+      <v-card-title>{{ trick.name }}</v-card-title>
+      <v-card-subtitle>{{ trick.stance }}</v-card-subtitle>
+    </v-card-item>
+  </v-card>
 </template>
 
 <script>
 export default {
-    props : ['trick'],
-
-}
+  props: ["trick"],
+};
 </script>
 
 <style scoped>
-
-.trick-card {
-    border: 1px solid black;
-
-    padding: 5px;
-
-    /* Change this to percent? */
-    min-width: 150px;
-
-    text-align: center;
-}
-
 </style>

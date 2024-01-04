@@ -1,7 +1,7 @@
 <template>
-  <button class="create-trick-button" v-on:click="handleCreateTrick">
+  <VBtn  v-on:click="handleCreateTrick" prepend-icon="mdi-plus">
     Create a New Trick
-  </button>
+  </VBtn>
 
   <div
     class="new-trick-form"
@@ -168,13 +168,6 @@ export default {
 </script>
 
 <style scoped>
-.create-trick-button {
-  display: block;
-
-  background-color: grey;
-
-  padding: 5px;
-}
 .cards-column-container {
   display: flex;
   justify-content: space-around;
@@ -184,8 +177,6 @@ export default {
 }
 
 .trick-cards-container {
-  border: 1px solid black;
-
   padding: 5px;
 
   display: grid;
