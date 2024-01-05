@@ -49,45 +49,20 @@
       ></v-text-field>
 
       <p>Is this trick in your bag?</p>
-      <div class="new-trick-form-radio-buttons">
-        <label for="Yes">Yes</label>
-        <input type="radio" name="is-known" id="Yes" value="Yes" required />
-
-        <label for="No">No</label>
-        <input type="radio" name="is-known" id="No" value="No" />
-      </div>
+      <v-radio-group v-model="inBagRadio" :rules="inBagRules" inline>
+        <v-radio label="Yes" value="Yes"></v-radio>
+        <v-radio label="No" value="No"></v-radio>
+      </v-radio-group>
 
       <p>Is this trick composed of a Shuv, Flip, or both?</p>
-      <div class="new-trick-form-radio-buttons">
-        <label for="Flip">Flip Trick</label>
-        <input
-          type="radio"
-          name="flip-or-shuv"
-          id="Flip"
-          value="Flip"
-          required
-        />
-
-        <label for="Shuv">Shuv Trick</label>
-        <input type="radio" name="flip-or-shuv" id="Shuv" value="Shuv" />
-
-        <label for="Flip-Shuv">Both</label>
-        <input
-          type="radio"
-          name="flip-or-shuv"
-          id="Flip-Shuv"
-          value="Flip-Shuv"
-        />
-      </div>
+      <v-radio-group v-model="flipShuvRadio" :rules="flipShuvRadioRules" inline>
+        <v-radio label="Shuv" value="Shuv"></v-radio>
+        <v-radio label="Flip" value="Flip"></v-radio>
+        <v-radio label="Combination" value="Flip-Shuv"></v-radio>
+      </v-radio-group>
 
       <input type="submit" @click="handleSubmitNewTrick" />
     </v-form>
-
-
-
-
-
-
 
     <v-btn v-on:click="handleCreateTrick" prepend-icon="mdi-plus" class="bg-blue-grey-lighten-4">
       Create a New Trick
@@ -123,6 +98,22 @@ export default {
           if (value?.length > 0) return true
 
           return 'Stance must not be left empty'
+        }
+      ],
+      inBagRadio : "",
+      inBagRules : [
+        value => {
+          if (value?.length > 0) return true
+
+          return 'You must select an option'
+        }
+      ],
+      flipShuvRadio : "",
+      flipShuvRadioRules : [
+        value => {
+          if (value?.length > 0) return true
+
+          return 'You must select an option'
         }
       ],
       showNewTrickForm: false,
