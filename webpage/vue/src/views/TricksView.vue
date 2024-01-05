@@ -1,78 +1,99 @@
 <template>
-  <VBtn  v-on:click="handleCreateTrick" prepend-icon="mdi-plus">
-    Create a New Trick
-  </VBtn>
+  <v-sheet class="d-flex flex-column ga-10">
+  
+    <v-sheet class="d-flex ga-10">
+      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3">
+        <h2 class="tricks-header">Known Tricks</h2>
+        <div class="trick-cards-container">
+          <trick-card
+            v-for="trick in knownTricks"
+            :key="trick.id"
+            :trick="trick"
+            class="trick-card"
+          ></trick-card>
+        </div>
+      </v-sheet>
 
-  <div
-    class="new-trick-form"
-    :class="{ 'is-showing': showNewTrickForm }"
-    v-if="showNewTrickForm"
-  >
-    <div class="new-trick-error-message error-message" v-if="newTrickError">
-      <p>You must complete all fields</p>
-    </div>
+      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3">
+        <h2 class="tricks-header">Unknown Tricks</h2>
+        <div class="trick-cards-container">
+          <trick-card
+            v-for="trick in unknownTricks"
+            :key="trick.id"
+            :trick="trick"
+            class="trick-card"
+          ></trick-card>
+        </div>
+      </v-sheet>
+    </v-sheet>
 
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" v-model="newTrick.name" required/>
 
-    <label for="stance">Stance</label>
-    <input type="text" id="stance" name="stance" v-model="newTrick.stance" required/>
 
-    <p>Is this trick in your bag?</p>
-    <div class="new-trick-form-radio-buttons">
-      <label for="Yes">Yes</label>
-      <input
-        type="radio"
-        name="is-known"
-        id="Yes"
-        value="Yes"
-        required
-      />
 
-      <label for="No">No</label>
-      <input type="radio" name="is-known" id="No" value="No"/>
-    </div>
 
-    <p>Is this trick composed of a Shuv, Flip, or both?</p>
-    <div class="new-trick-form-radio-buttons">
-      <label for="Flip">Flip Trick</label>
-      <input type="radio" name="flip-or-shuv" id="Flip" value="Flip" required/>
-
-      <label for="Shuv">Shuv Trick</label>
-      <input type="radio" name="flip-or-shuv" id="Shuv" value="Shuv"/>
-
-      <label for="Flip-Shuv">Both</label>
-      <input type="radio" name="flip-or-shuv" id="Flip-Shuv" value="Flip-Shuv"/>
-    </div>
-
-    <input type="submit" @click="handleSubmitNewTrick" />
-  </div>
-
-  <div class="cards-column-container">
-    <div>
-      <h2 class="tricks-header">Known Tricks</h2>
-      <div class="trick-cards-container">
-        <trick-card
-          v-for="trick in knownTricks"
-          :key="trick.id"
-          :trick="trick"
-          class="trick-card"
-        ></trick-card>
+    <v-form v-if="showNewTrickForm" @submit.prevent fast-fail>
+      <div class="new-trick-error-message error-message" v-if="newTrickError">
+        <p>You must complete all fields</p>
       </div>
-    </div>
 
-    <div>
-      <h2 class="tricks-header">Unknown Tricks</h2>
-      <div class="trick-cards-container">
-        <trick-card
-          v-for="trick in unknownTricks"
-          :key="trick.id"
-          :trick="trick"
-          class="trick-card"
-        ></trick-card>
+      <v-text-field
+        v-model="newTrick.name"
+        label="Trick Name"
+        :rules="trickNameRules"
+      ></v-text-field>
+
+      <v-text-field
+        v-model="newTrick.stance"
+        label="Stance"
+        :rules="stanceNameRules"
+      ></v-text-field>
+
+      <p>Is this trick in your bag?</p>
+      <div class="new-trick-form-radio-buttons">
+        <label for="Yes">Yes</label>
+        <input type="radio" name="is-known" id="Yes" value="Yes" required />
+
+        <label for="No">No</label>
+        <input type="radio" name="is-known" id="No" value="No" />
       </div>
-    </div>
-  </div>
+
+      <p>Is this trick composed of a Shuv, Flip, or both?</p>
+      <div class="new-trick-form-radio-buttons">
+        <label for="Flip">Flip Trick</label>
+        <input
+          type="radio"
+          name="flip-or-shuv"
+          id="Flip"
+          value="Flip"
+          required
+        />
+
+        <label for="Shuv">Shuv Trick</label>
+        <input type="radio" name="flip-or-shuv" id="Shuv" value="Shuv" />
+
+        <label for="Flip-Shuv">Both</label>
+        <input
+          type="radio"
+          name="flip-or-shuv"
+          id="Flip-Shuv"
+          value="Flip-Shuv"
+        />
+      </div>
+
+      <input type="submit" @click="handleSubmitNewTrick" />
+    </v-form>
+
+
+
+
+
+
+
+    <v-btn v-on:click="handleCreateTrick" prepend-icon="mdi-plus" class="bg-blue-grey-lighten-4">
+      Create a New Trick
+    </v-btn>
+
+  </v-sheet>
 </template>
 
 <script>
@@ -88,6 +109,22 @@ export default {
       knownTricks: [],
       unknownTricks: [],
       newTrick: {},
+      newTrickName : "",
+      trickNameRules : [
+        value => {
+          if (value?.length > 0) return true
+
+          return 'Trick name must not be left empty'
+        }
+      ],
+      newTrickStance : "",
+      stanceNameRules : [
+        value => {
+          if (value?.length > 0) return true
+
+          return 'Stance must not be left empty'
+        }
+      ],
       showNewTrickForm: false,
       newTrickError: false,
     };
@@ -128,21 +165,23 @@ export default {
       this.checkFormValid();
 
       if (!this.newTrickError) {
-
-         // Map the isKnown and flipOrShuv
-         this.newTrick.known = document.querySelector('input[name=is-known]:checked').value;
-         this.newTrick.flipOrShuv = document.querySelector('input[name=flip-or-shuv]:checked').value;
+        // Map the isKnown and flipOrShuv
+        this.newTrick.known = document.querySelector(
+          "input[name=is-known]:checked"
+        ).value;
+        this.newTrick.flipOrShuv = document.querySelector(
+          "input[name=flip-or-shuv]:checked"
+        ).value;
 
         TrickService.createTrick(this.newTrick)
-        .then((response) => {
-          // Reset New Trick Object
-          this.newTrick = {};
-        })
-        .catch((error) => {
-          this.errorHandler(error, "creating");
-        })
-      }
-      else {
+          .then((response) => {
+            // Reset New Trick Object
+            this.newTrick = {};
+          })
+          .catch((error) => {
+            this.errorHandler(error, "creating");
+          });
+      } else {
         return;
       }
     },
@@ -151,18 +190,22 @@ export default {
       // Selecting elements
       let name = document.getElementById("name").value;
       let stance = document.getElementById("stance").value;
-      let isKnown = document.querySelector('input[name=is-known]:checked');
-      let flipOrShuv = document.querySelector('input[name=flip-or-shuv]:checked');
+      let isKnown = document.querySelector("input[name=is-known]:checked");
+      let flipOrShuv = document.querySelector(
+        "input[name=flip-or-shuv]:checked"
+      );
 
-      if (name === "" || stance === "" || isKnown === null || flipOrShuv === null) {
+      if (
+        name === "" ||
+        stance === "" ||
+        isKnown === null ||
+        flipOrShuv === null
+      ) {
         this.newTrickError = true;
-      }
-      else {
-        this.newTrickError = false; 
+      } else {
+        this.newTrickError = false;
       }
     },
-
-
   },
 };
 </script>
@@ -213,6 +256,6 @@ export default {
 }
 
 input[type="radio"] {
-  margin-top : 3px;
+  margin-top: 3px;
 }
 </style>
