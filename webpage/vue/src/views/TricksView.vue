@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column ga-10">
     <v-sheet class="d-flex ga-10">
-      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3">
+      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">Your Bag</h2>
         <div class="trick-cards-container">
           <trick-card
@@ -13,7 +13,7 @@
         </div>
       </v-sheet>
 
-      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3">
+      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
         <div class="trick-cards-container">
           <trick-card
@@ -27,18 +27,20 @@
     </v-sheet>
 
     <v-expand-transition>
-      <v-form v-if="showNewTrickForm" @submit.prevent>
+      <v-form v-if="showNewTrickForm" @submit.prevent ref="form" >
         <v-text-field
           v-model="newTrick.name"
           label="Trick Name"
           :rules="trickNameRules"
         ></v-text-field>
 
-        <v-text-field
+        <!-- Add rules here -->
+        <v-select
           v-model="newTrick.stance"
-          label="Stance"
+          :items="stances"
           :rules="stanceNameRules"
-        ></v-text-field>
+          label="Stance"
+        ></v-select>
 
         <p>Is this trick in your bag?</p>
         <v-radio-group v-model="inBagRadio" :rules="inBagRules" inline>
@@ -64,7 +66,7 @@
             width="300"
             text="Submit"
             @click="
-              (expandNewTrickForm = !expandNewTrickForm), handleSubmitNewTrick()
+              (expandNewTrickForm = !expandNewTrickForm), validateForm()
             "
           ></v-btn>
 
@@ -72,7 +74,7 @@
             class="bg-red-lighten-1"
             width="300"
             text="Cancel"
-            @click="showNewTrickForm = !showNewTrickForm"
+            @click="(showNewTrickForm = !showNewTrickForm), resetForm()"
           ></v-btn>
         </div>
       </v-form>
@@ -99,6 +101,12 @@ export default {
   data() {
     return {
       tricks: [],
+      stances : [
+        "Normal",
+        "Switch",
+        "Fakie",
+        "Nollie"
+      ],
       expandNewTrickForm: false,
       newTrick: {},
       newTrickName: "",
@@ -181,8 +189,9 @@ export default {
 
         TrickService.createTrick(this.newTrick)
           .then((response) => {
-            // Reset New Trick Object, push trick to store array to dynamically update and close New Trick Form
+            // Push trick to store array to dynamically update page, reset the form, reset the data trick, and close the trick form
             this.addTrickToStore();
+            this.resetForm();
             this.newTrick = {};
             this.showNewTrickForm = !this.showNewTrickForm;
           })
@@ -201,6 +210,20 @@ export default {
         this.$store.state.inProgressTricks.push(this.newTrick);
       }
     },
+
+    resetForm() {
+      this.$refs.form.reset();
+    },
+    async validateForm () {
+        const { valid } = await this.$refs.form.validate()
+
+        if (valid)  { 
+          this.handleSubmitNewTrick(); 
+        }
+        else {
+          alert("Form is invalid");
+        }
+      },
   },
 };
 </script>
