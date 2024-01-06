@@ -3,24 +3,32 @@
     <v-sheet class="d-flex ga-10">
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">Your Bag</h2>
-        <div class="trick-cards-container">
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
           <trick-card
             v-for="trick in $store.state.inBagTricks"
             :key="trick.id"
             :trick="trick"
             class="trick-card"
+            :id="trick.id"
+            draggable="true"
+            v-on:dragstart="handleDragStart($event)"
+            
           ></trick-card>
         </div>
       </v-sheet>
 
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
-        <div class="trick-cards-container">
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
           <trick-card
             v-for="trick in $store.state.inProgressTricks"
             :key="trick.id"
             :trick="trick"
             class="trick-card"
+            :id="trick.id"
+            draggable="true"
+            v-on:dragstart="handleDragStart($event)"
+            
           ></trick-card>
         </div>
       </v-sheet>
@@ -203,6 +211,7 @@ export default {
       }
     },
 
+    // Store methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
@@ -211,9 +220,23 @@ export default {
       }
     },
 
+    // Drag and Drop methods
+    handleDragStart(event) {
+      event.dataTransfer.setData("trickId", event.target.id);
+    },
+
+    handleDrop(event) {
+      let trickId = event.dataTransfer.getData("trickId");
+      
+      // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
+    },
+
+
+    // Form Methods
     resetForm() {
       this.$refs.form.reset();
     },
+
     async validateForm () {
         const { valid } = await this.$refs.form.validate()
 
