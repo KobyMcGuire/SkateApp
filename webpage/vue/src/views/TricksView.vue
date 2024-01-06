@@ -5,7 +5,7 @@
         <h2 class="tricks-header">Your Bag</h2>
         <div class="trick-cards-container">
           <trick-card
-            v-for="trick in knownTricks"
+            v-for="trick in $store.state.inBagTricks"
             :key="trick.id"
             :trick="trick"
             class="trick-card"
@@ -17,7 +17,7 @@
         <h2 class="tricks-header">In-Progress Tricks</h2>
         <div class="trick-cards-container">
           <trick-card
-            v-for="trick in unknownTricks"
+            v-for="trick in $store.state.inProgressTricks"
             :key="trick.id"
             :trick="trick"
             class="trick-card"
@@ -64,7 +64,7 @@
             width="300"
             text="Submit"
             @click="
-              (expandNewTrickForm = !expandNewTrickForm), handleSubmitNewTrick
+              (expandNewTrickForm = !expandNewTrickForm), handleSubmitNewTrick()
             "
           ></v-btn>
 
@@ -99,8 +99,6 @@ export default {
   data() {
     return {
       tricks: [],
-      knownTricks: [],
-      unknownTricks: [],
       expandNewTrickForm: false,
       newTrick: {},
       newTrickName: "",
@@ -156,11 +154,16 @@ export default {
     },
 
     filterTricks(data) {
+      // Reset store tricks
+      this.$store.state.inBagTricks = [];
+      this.$store.state.inProgressTricks = [];
+
+      // Filter tricks
       data.forEach((trick) => {
         if (trick.known === "Yes") {
-          this.knownTricks.push(trick);
+          this.$store.state.inBagTricks.push(trick);
         } else {
-          this.unknownTricks.push(trick);
+          this.$store.state.inProgressTricks.push(trick);
         }
       });
     },
@@ -178,7 +181,8 @@ export default {
 
         TrickService.createTrick(this.newTrick)
           .then((response) => {
-            // Reset New Trick Object and Close New Trick Form
+            // Reset New Trick Object, push trick to store array to dynamically update and close New Trick Form
+            this.addTrickToStore();
             this.newTrick = {};
             this.showNewTrickForm = !this.showNewTrickForm;
           })
@@ -190,24 +194,11 @@ export default {
       }
     },
 
-    checkFormValid() {
-      // Selecting elements
-      let name = document.getElementById("name").value;
-      let stance = document.getElementById("stance").value;
-      let isKnown = document.querySelector("input[name=is-known]:checked");
-      let flipOrShuv = document.querySelector(
-        "input[name=flip-or-shuv]:checked"
-      );
-
-      if (
-        name === "" ||
-        stance === "" ||
-        isKnown === null ||
-        flipOrShuv === null
-      ) {
-        this.newTrickError = true;
+    addTrickToStore() {
+      if (this.newTrick.known === "Yes") {
+        this.$store.state.inBagTricks.push(this.newTrick);
       } else {
-        this.newTrickError = false;
+        this.$store.state.inProgressTricks.push(this.newTrick);
       }
     },
   },

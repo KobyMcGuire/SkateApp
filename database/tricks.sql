@@ -15,22 +15,6 @@ CREATE TABLE tricks
 	
 );
 
--- CREATE TABLE shuv_tricks
--- (
---   shuv_id serial,
---   name varchar(64) NOT NULL,
---   stance varchar(64) NOT NULL
- 
--- );
-
--- CREATE TABLE flip_shuv_tricks
--- (
---    flip_shuv_id serial,
---    name varchar(64) NOT NULL,
---    stance varchar(64) NOT NULL
-
--- );
-
 -- CREATE INSERTS TO POPULATE WITH ANY STARTING DATA
 --populate flip_tricks table
 INSERT INTO tricks (name, flip_or_shuv, stance, known) VALUES ('Kickflip', 'Flip', 'Normal', 'Yes');
