@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 import com.techelevator.dao.TrickDao;
+import com.techelevator.exception.DaoException;
 import com.techelevator.model.Trick;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,6 +68,12 @@ public class TrickController {
     public Trick create(@Valid @RequestBody Trick trick) {
         Trick addedTrick = dao.createTrick(trick);
         return addedTrick;
+    }
+
+    // Update a trick in the DB
+    @RequestMapping(path =  "/tricks/{id}", method = RequestMethod.PUT)
+    public Trick update(@Valid @RequestBody Trick trick, @PathVariable int id) {
+        return dao.updateTrick(trick);
     }
 
     // Delete trick by id in the database

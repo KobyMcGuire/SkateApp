@@ -112,6 +112,20 @@ public class JdbcTrickDao implements TrickDao {
         return trick;
     }
 
+    public Trick updateTrick(Trick trick) {
+        String sql = "UPDATE tricks " +
+                     "SET name = ?, flip_or_shuv = ?, stance = ?, known = ? " +
+                     "WHERE trick_id = ?";
+
+        int rowCount = jdbcTemplate.update(sql, trick.getName(), trick.getFlipOrShuv(), trick.getStance(), trick.getKnown(), trick.getId());
+
+        if (rowCount < 1) {
+            throw new DaoException("There was an error updating a trick.");
+        }
+
+        return trick;
+    }
+
     public int deleteTrick(int id) {
         String sql = "DELETE FROM tricks WHERE trick_id = ?";
         int affectedRows;

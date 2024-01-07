@@ -1,11 +1,6 @@
 <template>
   <div id="welcome">
     <h1>Welcome to your bag of tricks</h1>
-    <div class="home-images">
-      <img class="tre" src="../assets/treFlipPic.PNG" alt="">
-      <img class="grab" src="../assets/grabPic.PNG" alt="">
-      <img class="smith" src="../assets/smithGrind.PNG" alt="">
-    </div>
   </div>
 </template>
 
