@@ -10,9 +10,13 @@ export default {
         return http.get("/tricks");
     },
 
+    getTrick(trickId) {
+        return http.get(`/tricks/${trickId}`);
+    },
+
     createTrick(trick) {
         return http.post("/tricks", trick);
-    }
+    },
 
 
 }

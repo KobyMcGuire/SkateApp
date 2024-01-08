@@ -169,6 +169,11 @@ export default {
       console.log(`There was an error ${verb}, the error was: ${error}`);
     },
 
+
+
+
+
+
     filterTricks(data) {
       // Reset store tricks
       this.$store.state.inBagTricks = [];
@@ -184,6 +189,14 @@ export default {
       });
     },
 
+
+
+
+
+
+
+
+    // API CALLS
     handleCreateTrick() {
       // Show new trick form
       this.showNewTrickForm = !this.showNewTrickForm;
@@ -211,6 +224,16 @@ export default {
       }
     },
 
+    fetchTrick(trickId) {
+      TrickService.getTrick(trickId)
+      .then((response) => {
+        this.$store.state.fetchedTrick = response.data;
+      })
+      .catch((error) => {
+        this.errorHandler(error, "fetching a specific trick");
+      })
+    },
+
     // Store methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
@@ -220,16 +243,30 @@ export default {
       }
     },
 
+
+
+
+
+
+
     // Drag and Drop methods
     handleDragStart(event) {
       event.dataTransfer.setData("trickId", event.target.id);
     },
 
-    handleDrop(event) {
+     handleDrop(event) {
       let trickId = event.dataTransfer.getData("trickId");
-      
+      this.fetchTrick(trickId);
+      console.log(this.$store.state.fetchedTrick.stance);
       // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
     },
+
+
+
+
+
+
+
 
 
     // Form Methods
