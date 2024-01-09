@@ -14,6 +14,8 @@ public interface TrickDao {
 
     public Trick createTrick(Trick trick);
 
+    public Trick updateTrick(Trick trick);
+
     public int deleteTrick(int id);
 
 
