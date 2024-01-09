@@ -64,7 +64,7 @@
             width="300"
             text="Submit"
             @click="
-              (expandNewTrickForm = !expandNewTrickForm), handleSubmitNewTrick
+              (expandNewTrickForm = !expandNewTrickForm), handleSubmitNewTrick()
             "
           ></v-btn>
 
