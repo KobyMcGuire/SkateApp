@@ -186,6 +186,9 @@ export default {
           TrickService.updateTrick(trickId,  {id : trickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
            .then ((response) => {
             this.changeKnown = "";
+
+            // Update the store so it updates wihtout refreshing
+
             
            })
            .catch((error) => {
