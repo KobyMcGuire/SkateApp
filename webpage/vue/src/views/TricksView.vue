@@ -234,6 +234,12 @@ export default {
       })
     },
 
+
+
+
+
+
+
     // Store methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
@@ -257,6 +263,7 @@ export default {
      handleDrop(event) {
       let trickId = event.dataTransfer.getData("trickId");
       this.fetchTrick(trickId);
+      // Having async issues... work with array to have instantaneous visual cue and then update the database when data is back?
       console.log(this.$store.state.fetchedTrick.stance);
       // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
     },
