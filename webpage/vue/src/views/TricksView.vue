@@ -75,6 +75,7 @@ export default {
       ],
       expandNewTrickForm: false,
       newTrick: {},
+      updateTrickId : "",
       fetchedTrick: {},
       changeKnown : "",
       newTrickName: "",
@@ -125,10 +126,10 @@ export default {
   },
 
   methods: {
+    // HELPER METHODS
     errorHandler(error, verb) {
       console.log(`There was an error ${verb}, the error was: ${error}`);
     },
-
 
     filterTricks(data) {
       // Reset store tricks
@@ -141,11 +142,34 @@ export default {
           this.$store.state.inBagTricks.push(trick);
         } else {
           this.$store.state.inProgressTricks.push(trick);
-        }
+        } 
       });
     },
 
+    updateStoreAfterKnownChange() {
+      // Changing to in-bag
+      if (this.changeKnown === "Yes") {
+        for (let i = 0; i < this.$store.state.inProgressTricks.length; i++) {
+          if (this.$store.state.inProgressTricks[i].id == this.updateTrickId) {
+            // Splice from current array and push to other array
+            let trickToPush = this.$store.state.inProgressTricks[i];
+            this.$store.state.inProgressTricks.splice(i , 1);
+            this.$store.state.inBagTricks.push(trickToPush);
+          }
+        }
+      }
 
+      // Changing to in-progress
+      else {
+        for (let i = 0; i < this.$store.state.inBagTricks.length; i++) {
+          if (this.$store.state.inBagTricks[i].id == this.updateTrickId) {
+            let trickToPush = this.$store.state.inBagTricks[i];
+            this.$store.state.inBagTricks.splice(i , 1);
+            this.$store.state.inProgressTricks.push(trickToPush);
+          }
+        }
+      }
+    },
 
 
 
@@ -180,16 +204,17 @@ export default {
       }
     },
 
-    updateTrickKnown(trickId) {
-      TrickService.getTrick(trickId)
+    updateTrickKnown() {
+      TrickService.getTrick(this.updateTrickId)
         .then((response) => {      
-          TrickService.updateTrick(trickId,  {id : trickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
+          TrickService.updateTrick(this.updateTrickId,  {id : this.updateTrickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
            .then ((response) => {
+            // Update store for dynamiac updating
+            this.updateStoreAfterKnownChange();
+
+            // Reset data variables
             this.changeKnown = "";
-
-            // Update the store so it updates wihtout refreshing
-
-            
+            this.updateTrickId = "";
            })
            .catch((error) => {
             this.errorHandler(error, "updating known on a trick");
@@ -203,13 +228,7 @@ export default {
 
 
 
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 4751936bb9198363b5e01d2cd20e02d430ecd8e4
-    // Store methods
+    // STORE METHODS
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
@@ -220,34 +239,30 @@ export default {
     },
 
 
-    // Drag and Drop methods
+
+
+
+    // DRAG AND DROP METHODS
     handleDragStart(event) {
       event.dataTransfer.setData("trickId", event.target.id);
     },
 
     handleDropToKnown(event) {
-      let trickId = event.dataTransfer.getData("trickId");
-<<<<<<< HEAD
-      this.fetchTrick(trickId);
-      // Having async issues... work with array to have instantaneous visual cue and then update the database when data is back?
-      console.log(this.$store.state.fetchedTrick.stance);
-      // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
-=======
-      this.updateTrickKnown(trickId);
+      this.updateTrickId = event.dataTransfer.getData("trickId");
       this.changeKnown = "Yes";
-      // Switch Data in DB on that trick, Update Store Arrays 
->>>>>>> 4751936bb9198363b5e01d2cd20e02d430ecd8e4
+      this.updateTrickKnown();
+
     },
 
     handleDropToInProgress(event) {
-      let trickId = event.dataTransfer.getData("trickId");
-      this.updateTrickKnown(trickId);
-      this.changeKnown = "No";      
+      this.updateTrickId = event.dataTransfer.getData("trickId");
+      this.changeKnown = "No";
+      this.updateTrickKnown();      
     },
 
 
 
-    // Form Methods
+    // FORM METHODS
     resetForm() {
       this.$refs.form.reset();
     },
