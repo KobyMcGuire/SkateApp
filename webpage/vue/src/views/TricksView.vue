@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="d-flex flex-column ga-10">
     <v-sheet class="d-flex ga-10">
-      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
+      <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
         <h2 class="tricks-header">Your Bag</h2>
         <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
           <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
@@ -9,7 +9,7 @@
         </div>
       </v-sheet>
 
-      <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
+      <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
         <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
           <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
