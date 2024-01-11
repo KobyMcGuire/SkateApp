@@ -3,7 +3,7 @@
     <v-sheet class="d-flex ga-10">
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">Your Bag</h2>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
           <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
             :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
         </div>
@@ -11,7 +11,7 @@
 
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
           <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
             :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
         </div>
@@ -75,6 +75,8 @@ export default {
       ],
       expandNewTrickForm: false,
       newTrick: {},
+      fetchedTrick: {},
+      changeKnown : "",
       newTrickName: "",
       trickNameRules: [
         (value) => {
@@ -182,29 +184,33 @@ export default {
       }
     },
 
-    fetchTrick(trickId) {
+    updateTrickKnown(trickId) {
       TrickService.getTrick(trickId)
         .then((response) => {
-          this.$store.state.fetchedTrick = response.data;
+          // use response data
+          TrickService.updateTrick(trickId,  {id : trickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
+           .then ((response) => {
+            this.changeKnown = "";
+           })
+           .catch((error) => {
+            this.errorHandler(error, "updating known on a trick");
+           })
         })
         .catch((error) => {
           this.errorHandler(error, "fetching a specific trick");
         })
+
     },
 
     // Store methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
+
       } else {
         this.$store.state.inProgressTricks.push(this.newTrick);
       }
     },
-
-
-
-
-
 
 
     // Drag and Drop methods
@@ -212,11 +218,17 @@ export default {
       event.dataTransfer.setData("trickId", event.target.id);
     },
 
-    handleDrop(event) {
+    handleDropToKnown(event) {
       let trickId = event.dataTransfer.getData("trickId");
-      this.fetchTrick(trickId);
-      console.log(this.$store.state.fetchedTrick.stance);
-      // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
+      this.updateTrickKnown(trickId);
+      this.chnageKnown = "Yes";
+      // Switch Data in DB on that trick, Update Store Arrays 
+    },
+
+    handleDropToInProgress(event) {
+      let trickId = event.dataTransfer.getData("trickId");
+      this.updateTrickKnown(trickId);
+      this.chnageKnown = "No";      
     },
 
 

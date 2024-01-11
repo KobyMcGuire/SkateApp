@@ -18,5 +18,9 @@ export default {
         return http.post("/tricks", trick);
     },
 
+    updateTrick(trickId, trick) {
+        return http.put(`/tricks/${trickId}`, trick);
+    },
+
 
 }
