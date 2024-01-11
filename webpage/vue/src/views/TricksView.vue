@@ -130,10 +130,6 @@ export default {
     },
 
 
-
-
-
-
     filterTricks(data) {
       // Reset store tricks
       this.$store.state.inBagTricks = [];
@@ -186,11 +182,11 @@ export default {
 
     updateTrickKnown(trickId) {
       TrickService.getTrick(trickId)
-        .then((response) => {
-          // use response data
+        .then((response) => {      
           TrickService.updateTrick(trickId,  {id : trickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
            .then ((response) => {
             this.changeKnown = "";
+            
            })
            .catch((error) => {
             this.errorHandler(error, "updating known on a trick");
@@ -199,8 +195,11 @@ export default {
         .catch((error) => {
           this.errorHandler(error, "fetching a specific trick");
         })
-
     },
+
+
+
+
 
     // Store methods
     addTrickToStore() {
@@ -221,21 +220,15 @@ export default {
     handleDropToKnown(event) {
       let trickId = event.dataTransfer.getData("trickId");
       this.updateTrickKnown(trickId);
-      this.chnageKnown = "Yes";
+      this.changeKnown = "Yes";
       // Switch Data in DB on that trick, Update Store Arrays 
     },
 
     handleDropToInProgress(event) {
       let trickId = event.dataTransfer.getData("trickId");
       this.updateTrickKnown(trickId);
-      this.chnageKnown = "No";      
+      this.changeKnown = "No";      
     },
-
-
-
-
-
-
 
 
 
