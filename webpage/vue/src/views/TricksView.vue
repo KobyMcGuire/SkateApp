@@ -3,52 +3,27 @@
     <v-sheet class="d-flex ga-10">
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">Your Bag</h2>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
-          <trick-card
-            v-for="trick in $store.state.inBagTricks"
-            :key="trick.id"
-            :trick="trick"
-            class="trick-card"
-            :id="trick.id"
-            draggable="true"
-            v-on:dragstart="handleDragStart($event)"
-            
-          ></trick-card>
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
+          <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
+            :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
         </div>
       </v-sheet>
 
       <v-sheet rounded class="pa-3 elevation-10 bg-grey-lighten-3" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDrop($event)">
-          <trick-card
-            v-for="trick in $store.state.inProgressTricks"
-            :key="trick.id"
-            :trick="trick"
-            class="trick-card"
-            :id="trick.id"
-            draggable="true"
-            v-on:dragstart="handleDragStart($event)"
-            
-          ></trick-card>
+        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
+          <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
+            :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
         </div>
       </v-sheet>
     </v-sheet>
 
     <v-expand-transition>
-      <v-form v-if="showNewTrickForm" @submit.prevent ref="form" >
-        <v-text-field
-          v-model="newTrick.name"
-          label="Trick Name"
-          :rules="trickNameRules"
-        ></v-text-field>
+      <v-form v-if="showNewTrickForm" @submit.prevent ref="form">
+        <v-text-field v-model="newTrick.name" label="Trick Name" :rules="trickNameRules"></v-text-field>
 
         <!-- Add rules here -->
-        <v-select
-          v-model="newTrick.stance"
-          :items="stances"
-          :rules="stanceNameRules"
-          label="Stance"
-        ></v-select>
+        <v-select v-model="newTrick.stance" :items="stances" :rules="stanceNameRules" label="Stance"></v-select>
 
         <p>Is this trick in your bag?</p>
         <v-radio-group v-model="inBagRadio" :rules="inBagRules" inline>
@@ -57,43 +32,26 @@
         </v-radio-group>
 
         <p>Is this trick composed of a Shuv, Flip, or both?</p>
-        <v-radio-group
-          v-model="flipShuvRadio"
-          :rules="flipShuvRadioRules"
-          inline
-        >
+        <v-radio-group v-model="flipShuvRadio" :rules="flipShuvRadioRules" inline>
           <v-radio label="Shuv" value="Shuv"></v-radio>
           <v-radio label="Flip" value="Flip"></v-radio>
           <v-radio label="Combination" value="Flip-Shuv"></v-radio>
         </v-radio-group>
 
         <div class="d-flex justify-center ga-3">
-          <v-btn
-            type="submit"
-            class="bg-green-lighten-1"
-            width="300"
-            text="Submit"
-            @click="
-              (expandNewTrickForm = !expandNewTrickForm), validateForm()
-            "
-          ></v-btn>
+          <v-btn type="submit" class="bg-green-lighten-1" width="300" text="Submit" @click="
 
-          <v-btn
-            class="bg-red-lighten-1"
-            width="300"
-            text="Cancel"
-            @click="(showNewTrickForm = !showNewTrickForm), resetForm()"
-          ></v-btn>
+            (expandNewTrickForm = !expandNewTrickForm), validateForm()
+
+            "></v-btn>
+
+          <v-btn class="bg-red-lighten-1" width="300" text="Cancel"
+            @click="(showNewTrickForm = !showNewTrickForm), resetForm()"></v-btn>
         </div>
       </v-form>
     </v-expand-transition>
 
-    <v-btn
-      v-on:click="handleCreateTrick"
-      prepend-icon="mdi-plus"
-      class="bg-blue-grey-lighten-4 mx-auto"
-      width="300"
-    >
+    <v-btn v-on:click="handleCreateTrick" prepend-icon="mdi-plus" class="bg-blue-grey-lighten-4 mx-auto" width="300">
       Create a New Trick
     </v-btn>
   </v-sheet>
@@ -109,7 +67,7 @@ export default {
   data() {
     return {
       tricks: [],
-      stances : [
+      stances: [
         "Normal",
         "Switch",
         "Fakie",
@@ -117,6 +75,8 @@ export default {
       ],
       expandNewTrickForm: false,
       newTrick: {},
+      fetchedTrick: {},
+      changeKnown : "",
       newTrickName: "",
       trickNameRules: [
         (value) => {
@@ -170,10 +130,6 @@ export default {
     },
 
 
-
-
-
-
     filterTricks(data) {
       // Reset store tricks
       this.$store.state.inBagTricks = [];
@@ -224,35 +180,44 @@ export default {
       }
     },
 
-    fetchTrick(trickId) {
+    updateTrickKnown(trickId) {
       TrickService.getTrick(trickId)
-      .then((response) => {
-        this.$store.state.fetchedTrick = response.data;
-      })
-      .catch((error) => {
-        this.errorHandler(error, "fetching a specific trick");
-      })
+        .then((response) => {      
+          TrickService.updateTrick(trickId,  {id : trickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
+           .then ((response) => {
+            this.changeKnown = "";
+
+            // Update the store so it updates wihtout refreshing
+
+            
+           })
+           .catch((error) => {
+            this.errorHandler(error, "updating known on a trick");
+           })
+        })
+        .catch((error) => {
+          this.errorHandler(error, "fetching a specific trick");
+        })
     },
 
 
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 4751936bb9198363b5e01d2cd20e02d430ecd8e4
     // Store methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
+
       } else {
         this.$store.state.inProgressTricks.push(this.newTrick);
       }
     },
-
-
-
-
-
 
 
     // Drag and Drop methods
@@ -260,19 +225,25 @@ export default {
       event.dataTransfer.setData("trickId", event.target.id);
     },
 
-     handleDrop(event) {
+    handleDropToKnown(event) {
       let trickId = event.dataTransfer.getData("trickId");
+<<<<<<< HEAD
       this.fetchTrick(trickId);
       // Having async issues... work with array to have instantaneous visual cue and then update the database when data is back?
       console.log(this.$store.state.fetchedTrick.stance);
       // Grab Trick , Switch Data in DB on that trick, Update Store Arrays 
+=======
+      this.updateTrickKnown(trickId);
+      this.changeKnown = "Yes";
+      // Switch Data in DB on that trick, Update Store Arrays 
+>>>>>>> 4751936bb9198363b5e01d2cd20e02d430ecd8e4
     },
 
-
-
-
-
-
+    handleDropToInProgress(event) {
+      let trickId = event.dataTransfer.getData("trickId");
+      this.updateTrickKnown(trickId);
+      this.changeKnown = "No";      
+    },
 
 
 
@@ -281,16 +252,16 @@ export default {
       this.$refs.form.reset();
     },
 
-    async validateForm () {
-        const { valid } = await this.$refs.form.validate()
+    async validateForm() {
+      const { valid } = await this.$refs.form.validate()
 
-        if (valid)  { 
-          this.handleSubmitNewTrick(); 
-        }
-        else {
-          alert("Form is invalid");
-        }
-      },
+      if (valid) {
+        this.handleSubmitNewTrick();
+      }
+      else {
+        alert("Form is invalid");
+      }
+    },
   },
 };
 </script>

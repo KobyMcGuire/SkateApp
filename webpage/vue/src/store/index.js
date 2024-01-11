@@ -10,8 +10,6 @@ export function createStore(currentToken, currentUser) {
       inBagTricks : [],
       inProgressTricks : [],
 
-      fetchedTrick : {},
-
     },
     mutations: {
       SET_AUTH_TOKEN(state, token) {
