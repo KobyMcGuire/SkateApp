@@ -3,6 +3,7 @@
     <v-sheet class="d-flex ga-10">
       <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
         <h2 class="tricks-header">Your Bag</h2>
+        <trick-search-bar :isKnown="'Yes'"/>
         <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
           <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
             :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
@@ -11,6 +12,7 @@
 
       <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
         <h2 class="tricks-header">In-Progress Tricks</h2>
+        <trick-search-bar :isKnown="'No'"/>
         <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
           <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
             :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
@@ -60,9 +62,10 @@
 <script>
 import TrickService from "../services/TrickService";
 import TrickCard from "../components/TrickCard.vue";
+import TrickSearchBar from "../components/TrickSearchBar.vue";
 
 export default {
-  components: { TrickCard },
+  components: { TrickCard, TrickSearchBar },
 
   data() {
     return {
