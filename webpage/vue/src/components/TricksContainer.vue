@@ -1,11 +1,11 @@
 <template>
-    <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
+    <v-sheet rounded class="d-flex-column pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
         <!-- Header -->
-        <h2 v-if="isKnown === 'Yes'" class="tricks-header">Your Bag</h2>
-        <h2 v-else class="tricks-header">In Progress Tricks</h2>
+        <h2 v-if="isKnown === 'Yes'" class="mb-6 text-center">Your Bag</h2>
+        <h2 v-else class="mb-6 text-center">In Progress Tricks</h2>
 
         <!-- Search Bar -->
-        <v-toolbar dense floating height="50" rounded class="pl-2">
+        <v-toolbar dense floating height="40" rounded class="pl-2 mb-3">
             <v-text-field hide-details prepend-icon="mdi-magnify" single-line v-model="searchTerm"></v-text-field>
         </v-toolbar>
 
@@ -140,9 +140,9 @@ export default {
 .trick-cards-container {
     padding: 5px;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
