@@ -41,13 +41,14 @@
 </template>
 
 <script>
+import '../src/assets/global.css'
 export default {};
 </script>
 
 <style>
-* {
+/* * {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-}
+} */
 
 .error-message {
   background-color: #fca5a5;
