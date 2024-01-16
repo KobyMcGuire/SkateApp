@@ -26,6 +26,13 @@
           to="/tricks"
           link
         ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-creation"
+          title="Line Generator"
+          value="lineGenerator"
+          to="/lineGenerator"
+          link
+        ></v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -41,15 +48,11 @@
 </template>
 
 <script>
-import '../src/assets/global.css'
+// import '../src/assets/global.css'
 export default {};
 </script>
 
 <style>
-/* * {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-} */
-
 .error-message {
   background-color: #fca5a5;
 

@@ -15,6 +15,6 @@ export default {
 
 <style scoped>
 .trick-card {
-  min-width: 100px;
+  min-width: 125px;
 }
 </style>

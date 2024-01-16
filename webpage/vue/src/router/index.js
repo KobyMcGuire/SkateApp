@@ -7,6 +7,7 @@ import LoginView from '../views/LoginView.vue';
 import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import TricksView from '../views/TricksView.vue';
+import LineGeneratorView from '../views/LineGeneratorView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -29,6 +30,14 @@ const routes = [
     path: '/tricks',
     name: 'tricks',
     component: TricksView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/lineGenerator',
+    name: 'lineGenerator',
+    component: LineGeneratorView,
     meta: {
       requiresAuth: false
     }
