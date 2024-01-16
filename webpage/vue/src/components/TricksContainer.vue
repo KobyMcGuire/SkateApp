@@ -36,14 +36,15 @@ export default {
         tricks() {
             if (this.isKnown === 'Yes') {
                 return this.$store.state.inBagTricks.filter((trick) => {
-                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                    console.log(trick);
+                    if (trick.name === null || trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
                         return true;
                     }
                 });
             }
             else {
                 return this.$store.state.inProgressTricks.filter((trick) => {
-                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                    if (trick.name === null || trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
                         return true;
                     }
                 });
@@ -116,6 +117,7 @@ export default {
 
         // Drag and Drop methods
         handleDragStart(event) {
+            console.log(event.target.id);
             event.dataTransfer.setData("trickId", event.target.id);
         },
 

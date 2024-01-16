@@ -10,9 +10,9 @@
 
     <v-expand-transition>
       <v-form v-if="showNewTrickForm" @submit.prevent ref="form">
-        <v-text-field v-model="newTrick.name" label="Trick Name" :rules="trickNameRules"></v-text-field>
+        <v-text-field v-model="newTrickName" label="Trick Name" :rules="trickNameRules"></v-text-field>
 
-        <v-select v-model="newTrick.stance" :items="stances" :rules="stanceNameRules" label="Stance"></v-select>
+        <v-select v-model="newTrickStance" :items="stances" :rules="stanceNameRules" label="Stance"></v-select>
 
         <p>Is this trick in your bag?</p>
         <v-radio-group v-model="inBagRadio" :rules="inBagRules" inline>
@@ -64,7 +64,9 @@ export default {
         "Nollie"
       ],
       expandNewTrickForm: false,
-      newTrick: {},
+      newTrick : {},
+      newTrickName : "",
+      newTrickStance : "",
       updateTrickId: "",
       fetchedTrick: {},
       changeKnown: "",
@@ -136,24 +138,27 @@ export default {
       });
     },
 
-
-
-
-    // API calls
     handleCreateTrick() {
       // Show new trick form
       this.showNewTrickForm = !this.showNewTrickForm;
     },
 
+
+
+
+    // API calls
     handleSubmitNewTrick() {
-      if (!this.newTrickError) {
-        // Map the isKnown and flipOrShuv
-        this.newTrick.known = this.inBagRadio;
+        // Map the newTrick object
+        this.newTrick.name = this.newTrickName;
         this.newTrick.flipOrShuv = this.flipShuvRadio;
+        this.newTrick.stance = this.newTrickStance;
+        this.newTrick.known = this.inBagRadio;
+
 
         TrickService.createTrick(this.newTrick)
           .then((response) => {
             // Push trick to store array to dynamically update page, reset the form, reset the data trick, and close the trick form
+            this.newTrick.id = response.data.id;
             this.addTrickToStore();
             this.resetForm();
             this.newTrick = {};
@@ -161,10 +166,7 @@ export default {
           })
           .catch((error) => {
             this.errorHandler(error, "creating");
-          });
-      } else {
-        return;
-      }
+          });    
     },
 
 
@@ -174,13 +176,10 @@ export default {
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
-
       } else {
         this.$store.state.inProgressTricks.push(this.newTrick);
       }
     },
-
-
 
 
 
