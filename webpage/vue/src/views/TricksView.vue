@@ -12,7 +12,6 @@
       <v-form v-if="showNewTrickForm" @submit.prevent ref="form">
         <v-text-field v-model="newTrick.name" label="Trick Name" :rules="trickNameRules"></v-text-field>
 
-        <!-- Add rules here -->
         <v-select v-model="newTrick.stance" :items="stances" :rules="stanceNameRules" label="Stance"></v-select>
 
         <p>Is this trick in your bag?</p>
@@ -49,13 +48,11 @@
 
 <script>
 import TrickService from "../services/TrickService";
-import TrickCard from "../components/TrickCard.vue";
 import TricksContainer from "../components/TricksContainer.vue";
-import TrickSearchBar from "../components/TrickSearchBar.vue";
 
 
 export default {
-  components: { TrickCard, TrickSearchBar, TricksContainer },
+  components: { TricksContainer },
 
   data() {
     return {
@@ -119,7 +116,7 @@ export default {
   },
 
   methods: {
-    // HELPER METHODS
+    // Helper Methods
     errorHandler(error, verb) {
       console.log(`There was an error ${verb}, the error was: ${error}`);
     },
@@ -142,7 +139,7 @@ export default {
 
 
 
-    // API CALLS
+    // API calls
     handleCreateTrick() {
       // Show new trick form
       this.showNewTrickForm = !this.showNewTrickForm;
@@ -173,7 +170,7 @@ export default {
 
 
 
-    // STORE METHODS
+    // Store Methods
     addTrickToStore() {
       if (this.newTrick.known === "Yes") {
         this.$store.state.inBagTricks.push(this.newTrick);
@@ -187,7 +184,7 @@ export default {
 
 
 
-    // FORM METHODS
+    // Form Methods
     resetForm() {
       this.$refs.form.reset();
     },
@@ -207,50 +204,6 @@ export default {
 </script>
 
 <style scoped>
-.cards-column-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-
-  min-width: 80%;
-}
-
-.trick-cards-container {
-  padding: 5px;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: center;
-  gap: 10px;
-}
-
-.tricks-header {
-  text-align: center;
-}
-
-.new-trick-form {
-  border: 1px solid black;
-
-  padding: 10px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  min-width: 10%;
-  min-height: 100px;
-}
-
-.new-trick-form-radio-buttons {
-  display: flex;
-  gap: 5px;
-}
-
-.new-trick-form input {
-  margin-bottom: 10px;
-}
-
 input[type="radio"] {
   margin-top: 3px;
 }

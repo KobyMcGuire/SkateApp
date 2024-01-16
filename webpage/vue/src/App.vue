@@ -3,7 +3,7 @@
     <v-navigation-drawer expand-on-hover rail>
       <v-list>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
+          prepend-avatar=""
           title="Koby McGuire"
           subtitle="testEmail@gmail.com"
         ></v-list-item>

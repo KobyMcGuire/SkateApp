@@ -1,15 +1,22 @@
 <template>
     <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
-        <h2 class="tricks-header">Your Bag</h2>
-        <!-- Search Bar component here  -->
-        <div v-if="isKnown === 'Yes'" class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
-            <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
-                :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
-        </div>
+        <!-- Header -->
+        <h2 v-if="isKnown === 'Yes'" class="tricks-header">Your Bag</h2>
+        <h2 v-else class="tricks-header">In Progress Tricks</h2>
 
+        <!-- Search Bar -->
+        <v-toolbar dense floating height="50" rounded class="pl-2">
+            <v-text-field hide-details prepend-icon="mdi-magnify" single-line v-model="searchTerm"></v-text-field>
+        </v-toolbar>
+
+        <!-- The inBag container and the inProgress container -->
+        <div v-if="isKnown === 'Yes'" class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
+            <trick-card v-for="trick in tricks" :key="trick.id" :trick="trick" class="trick-card" :id="trick.id"
+                draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
+        </div>
         <div v-else class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
-            <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
-                :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
+            <trick-card v-for="trick in tricks" :key="trick.id" :trick="trick" class="trick-card" :id="trick.id"
+                draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
         </div>
     </v-sheet>
 </template>
@@ -24,17 +31,40 @@ export default {
 
     props: ['isKnown'],
 
-    computed : {
+    computed: {
+        // Search Bar functionality
+        tricks() {
+            if (this.isKnown === 'Yes') {
+                return this.$store.state.inBagTricks.filter((trick) => {
+                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                        return true;
+                    }
+                });
+            }
+            else {
+                return this.$store.state.inProgressTricks.filter((trick) => {
+                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                        return true;
+                    }
+                });
+            }
+        }
 
     },
 
     data() {
         return {
             changeKnown: "",
+            searchTerm: "",
         }
     },
 
     methods: {
+        // Error handler
+        errorHandler(error, verb) {
+            console.log(`There was an error ${verb}, the error was: ${error}`);
+        },
+        // Updating the store arrays in order to have the drag and drop happen instantly ... was having issues with data taking too long coming back from back-end
         updateStoreAfterKnownChange() {
             // Changing to in-bag
             if (this.changeKnown === "Yes") {
@@ -61,6 +91,7 @@ export default {
         },
 
 
+        // API call to update the trick's 'known' attribute
         updateTrickKnown() {
             TrickService.getTrick(this.updateTrickId)
                 .then((response) => {
@@ -101,9 +132,6 @@ export default {
             this.updateTrickKnown();
         },
     }
-
-
-
 }
 </script>
 
