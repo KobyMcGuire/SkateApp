@@ -1,23 +1,11 @@
 <template>
   <v-sheet class="d-flex flex-column ga-10">
     <v-sheet class="d-flex ga-10">
-      <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
-        <h2 class="tricks-header">Your Bag</h2>
-        <trick-search-bar :isKnown="'Yes'"/>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToKnown($event)">
-          <trick-card v-for="trick in $store.state.inBagTricks" :key="trick.id" :trick="trick" class="trick-card"
-            :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
-        </div>
-      </v-sheet>
 
-      <v-sheet rounded class="pa-3 elevation-10 bg-blue-grey-lighten-4" width="500">
-        <h2 class="tricks-header">In-Progress Tricks</h2>
-        <trick-search-bar :isKnown="'No'"/>
-        <div class="trick-cards-container" @dragover.prevent v-on:drop="handleDropToInProgress($event)">
-          <trick-card v-for="trick in $store.state.inProgressTricks" :key="trick.id" :trick="trick" class="trick-card"
-            :id="trick.id" draggable="true" v-on:dragstart="handleDragStart($event)"></trick-card>
-        </div>
-      </v-sheet>
+      <tricks-container :isKnown="'Yes'" />
+
+      <tricks-container :isKnown="'No'" />
+
     </v-sheet>
 
     <v-expand-transition>
@@ -62,10 +50,12 @@
 <script>
 import TrickService from "../services/TrickService";
 import TrickCard from "../components/TrickCard.vue";
+import TricksContainer from "../components/TricksContainer.vue";
 import TrickSearchBar from "../components/TrickSearchBar.vue";
 
+
 export default {
-  components: { TrickCard, TrickSearchBar },
+  components: { TrickCard, TrickSearchBar, TricksContainer },
 
   data() {
     return {
@@ -78,9 +68,9 @@ export default {
       ],
       expandNewTrickForm: false,
       newTrick: {},
-      updateTrickId : "",
+      updateTrickId: "",
       fetchedTrick: {},
-      changeKnown : "",
+      changeKnown: "",
       newTrickName: "",
       trickNameRules: [
         (value) => {
@@ -145,36 +135,9 @@ export default {
           this.$store.state.inBagTricks.push(trick);
         } else {
           this.$store.state.inProgressTricks.push(trick);
-        } 
+        }
       });
     },
-
-    updateStoreAfterKnownChange() {
-      // Changing to in-bag
-      if (this.changeKnown === "Yes") {
-        for (let i = 0; i < this.$store.state.inProgressTricks.length; i++) {
-          if (this.$store.state.inProgressTricks[i].id == this.updateTrickId) {
-            // Splice from current array and push to other array
-            let trickToPush = this.$store.state.inProgressTricks[i];
-            this.$store.state.inProgressTricks.splice(i , 1);
-            this.$store.state.inBagTricks.push(trickToPush);
-          }
-        }
-      }
-
-      // Changing to in-progress
-      else {
-        for (let i = 0; i < this.$store.state.inBagTricks.length; i++) {
-          if (this.$store.state.inBagTricks[i].id == this.updateTrickId) {
-            let trickToPush = this.$store.state.inBagTricks[i];
-            this.$store.state.inBagTricks.splice(i , 1);
-            this.$store.state.inProgressTricks.push(trickToPush);
-          }
-        }
-      }
-    },
-
-
 
 
 
@@ -207,27 +170,6 @@ export default {
       }
     },
 
-    updateTrickKnown() {
-      TrickService.getTrick(this.updateTrickId)
-        .then((response) => {      
-          TrickService.updateTrick(this.updateTrickId,  {id : this.updateTrickId , name : response.data.name, flipOrShuv : response.data.flipOrShuv, stance : response.data.stance , known : this.changeKnown })
-           .then ((response) => {
-            // Update store for dynamiac updating
-            this.updateStoreAfterKnownChange();
-
-            // Reset data variables
-            this.changeKnown = "";
-            this.updateTrickId = "";
-           })
-           .catch((error) => {
-            this.errorHandler(error, "updating known on a trick");
-           })
-        })
-        .catch((error) => {
-          this.errorHandler(error, "fetching a specific trick");
-        })
-    },
-
 
 
 
@@ -242,26 +184,6 @@ export default {
     },
 
 
-
-
-
-    // DRAG AND DROP METHODS
-    handleDragStart(event) {
-      event.dataTransfer.setData("trickId", event.target.id);
-    },
-
-    handleDropToKnown(event) {
-      this.updateTrickId = event.dataTransfer.getData("trickId");
-      this.changeKnown = "Yes";
-      this.updateTrickKnown();
-
-    },
-
-    handleDropToInProgress(event) {
-      this.updateTrickId = event.dataTransfer.getData("trickId");
-      this.changeKnown = "No";
-      this.updateTrickKnown();      
-    },
 
 
 
