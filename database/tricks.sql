@@ -46,9 +46,9 @@ INSERT INTO tricks (name, flip_or_shuv, stance, known) VALUES ('Varial Kickflip'
 INSERT INTO tricks (name, flip_or_shuv, stance, known) VALUES ('Varial Heelflip', 'Flip-Shuv', 'Switch', 'No');
 
 --populate the practice_bags table
-INSERT INTO practice_bags (bag_creation_date) VALUES ('Mon Aug 31 2020'),
-INSERT INTO practice_bags (bag_creation_date) VALUES ('Tue Sep 20 2020'),
-INSERT INTO practice_bags (bag_creation_date) VALUES ('Fri Dec 01 2021'),
+INSERT INTO practice_bags (bag_creation_date) VALUES ('2024-01-18');
+INSERT INTO practice_bags (bag_creation_date) VALUES ('2024-01-22'); 
+INSERT INTO practice_bags (bag_creation_date) VALUES ('2024-01-24'); 
 
 --populate the tricks_practice_bags table
 INSERT INTO tricks_practice_bags (practice_bag_id , trick_id) VALUES (1, 1);

@@ -27,6 +27,7 @@ export default {
     },
 
     created() {
+        
         PracticeBagService.getPracticeBags()
             .then((response) => {
                 this.practiceBags = response.data;
