@@ -9,6 +9,7 @@ export function createStore(currentToken, currentUser) {
 
       inBagTricks : [],
       inProgressTricks : [],
+      practiceBags: [],
       
     },
     mutations: {

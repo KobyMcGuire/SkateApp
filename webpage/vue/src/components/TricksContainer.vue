@@ -36,7 +36,6 @@ export default {
         tricks() {
             if (this.isKnown === 'Yes') {
                 return this.$store.state.inBagTricks.filter((trick) => {
-                    console.log(trick);
                     if (trick.name === null || trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
                         return true;
                     }

@@ -22,7 +22,7 @@ public class JdbcPracticeBagDao implements PracticeBagDao {
     @Override
     public List<PracticeBag> fetchAllPracticeBags() {
         List<PracticeBag> practiceBags = new ArrayList<>();
-        String sql = "SELECT * from practice_bags";
+        String sql = "SELECT * from practice_bags ORDER BY practice_bags.practice_bag_id DESC";
 
         try {
             SqlRowSet results =  jdbcTemplate.queryForRowSet(sql);
