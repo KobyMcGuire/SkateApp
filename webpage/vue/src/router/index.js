@@ -8,6 +8,7 @@ import LogoutView from '../views/LogoutView.vue';
 import RegisterView from '../views/RegisterView.vue';
 import TricksView from '../views/TricksView.vue';
 import LineGeneratorView from '../views/LineGeneratorView.vue';
+import PracticeBagView from '../views/PracticeBagView.vue';
 
 /**
  * The Vue Router is used to "direct" the browser to render a specific view component
@@ -30,6 +31,14 @@ const routes = [
     path: '/tricks',
     name: 'tricks',
     component: TricksView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/practiceBag',
+    name: 'practiceBag',
+    component: PracticeBagView,
     meta: {
       requiresAuth: false
     }

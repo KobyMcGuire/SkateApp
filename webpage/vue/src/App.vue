@@ -28,11 +28,19 @@
         ></v-list-item>
         <v-list-item
           prepend-icon="mdi-creation"
+          title="Practice Bag"
+          value="practiceBag"
+          to="/practiceBag"
+          link
+        ></v-list-item>
+        <v-list-item
+          prepend-icon="mdi-creation"
           title="Line Generator"
           value="lineGenerator"
           to="/lineGenerator"
           link
         ></v-list-item>
+        
       </v-list>
     </v-navigation-drawer>
 

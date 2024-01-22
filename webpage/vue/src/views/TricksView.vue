@@ -70,7 +70,6 @@ export default {
       updateTrickId: "",
       fetchedTrick: {},
       changeKnown: "",
-      newTrickName: "",
       trickNameRules: [
         (value) => {
           if (value?.length > 0) return true;
@@ -78,7 +77,6 @@ export default {
           return "Trick name must not be left empty";
         },
       ],
-      newTrickStance: "",
       stanceNameRules: [
         (value) => {
           if (value?.length > 0) return true;
