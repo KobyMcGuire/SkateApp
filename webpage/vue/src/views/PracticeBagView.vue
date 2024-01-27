@@ -1,6 +1,6 @@
 <template>
     <v-sheet class="d-flex-column">
-        <h1>Create a Practice Bag for your next Session</h1>
+        <h1>Generate a Practice Bag for your next Session</h1>
 
         <v-divider class="my-10"></v-divider>
 
@@ -36,6 +36,7 @@ export default {
             .catch((error) => {
                 this.errorHandler(error, 'fetching');
             })
+
     },
 
     computed : {

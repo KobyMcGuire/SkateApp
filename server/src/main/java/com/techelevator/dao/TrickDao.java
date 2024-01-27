@@ -4,19 +4,21 @@ import com.techelevator.model.Trick;
 import java.util.List;
 
 public interface TrickDao {
-    public List<Trick> fetchAllTricks();
+     List<Trick> fetchAllTricks();
 
-    public Trick fetchTrickById(int id);
+     Trick fetchTrickById(int id);
 
-    public List<Trick> fetchUnknownTricks();
+     List<Trick> fetchUnknownTricks();
 
-    public List<Trick> fetchKnownTricks();
+     List<Trick> fetchKnownTricks();
 
-    public Trick createTrick(Trick trick);
+     List<Trick> fetchPracticeBagTricks(int id);
 
-    public Trick updateTrick(Trick trick);
+     Trick createTrick(Trick trick);
 
-    public int deleteTrick(int id);
+     Trick updateTrick(Trick trick);
+
+     int deleteTrick(int id);
 
 
 

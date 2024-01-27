@@ -10,8 +10,9 @@ export function createStore(currentToken, currentUser) {
       inBagTricks : [],
       inProgressTricks : [],
       practiceBags: [],
-      
+      practiceBagsMap: new Map()
     },
+
     mutations: {
       SET_AUTH_TOKEN(state, token) {
         state.token = token;

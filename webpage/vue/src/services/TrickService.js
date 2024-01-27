@@ -14,6 +14,10 @@ export default {
         return http.get(`/tricks/${trickId}`);
     },
 
+    getPracticeBagTricks(practiceBagId) {
+        return http.get(`/tricks/practicebags/${practiceBagId}`);
+    },
+
     createTrick(trick) {
         return http.post("/tricks", trick);
     },

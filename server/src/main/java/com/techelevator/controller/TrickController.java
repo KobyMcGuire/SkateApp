@@ -62,6 +62,12 @@ public class TrickController {
         return tricks;
     }
 
+    // Fetch a list of tricks that are associated with a practice bag
+    @RequestMapping(path="/tricks/practicebags/{id}", method = RequestMethod.GET)
+    public List<Trick> listPracticeBagTricks(@PathVariable int id) {
+        return trickDao.fetchPracticeBagTricks(id);
+    }
+
     // Add a trick to the DB
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(path = "/tricks", method = RequestMethod.POST)

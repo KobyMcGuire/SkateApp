@@ -76,6 +76,8 @@ public class JdbcTrickDao implements TrickDao {
         return tricks;
     }
 
+
+
     public List<Trick> fetchUnknownTricks() {
         List<Trick> tricks = new ArrayList<>();
         String sql = "SELECT * " +
@@ -94,6 +96,32 @@ public class JdbcTrickDao implements TrickDao {
 
         return tricks;
     }
+
+
+    @Override
+    public List<Trick> fetchPracticeBagTricks(int id) {
+        List<Trick> tricks =  new ArrayList<>();
+        String sql = "SELECT * " +
+                     "FROM tricks " +
+                     "JOIN tricks_practice_bags on tricks.trick_id = tricks_practice_bags.trick_id " +
+                     "JOIN practice_bags on tricks_practice_bags.practice_bag_id = practice_bags.practice_bag_id " +
+                     "WHERE practice_bags.practice_bag_id = ? " +
+                     "ORDER BY practice_bags.practice_bag_id";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+
+            while (results.next()) {
+                tricks.add(mapRowToTrick(results));
+            }
+        }
+        catch (Exception e) {
+            throw new DaoException("There was a problem fetching this practice bag's tricks", e);
+        }
+
+        return tricks;
+    }
+
 
     public Trick createTrick(Trick trick) {
 
