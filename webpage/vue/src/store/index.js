@@ -10,6 +10,8 @@ export function createStore(currentToken, currentUser) {
       inBagTricks : [],
       inProgressTricks : [],
       practiceBags: [],
+      unknownTricks : [],
+      knownTricks : [],
       practiceBagsMap: new Map()
     },
 

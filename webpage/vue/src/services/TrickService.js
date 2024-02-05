@@ -10,6 +10,14 @@ export default {
         return http.get("/tricks");
     },
 
+    getKnownTricks() {
+        return http.get("/tricks/known");
+    },
+    
+    getUnknownTricks() {
+        return http.get("/tricks/unknown");
+    },
+
     getTrick(trickId) {
         return http.get(`/tricks/${trickId}`);
     },
