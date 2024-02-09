@@ -137,6 +137,16 @@ export default {
 
         },
 
+        grabRandomInProgessTricks() {
+            
+
+        },
+
+        grabRandomMixTricks() {
+            
+
+        },
+
 
         // Form Validation Method
         async validateForm() {
