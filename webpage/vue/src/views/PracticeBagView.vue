@@ -7,7 +7,7 @@
             <v-select v-model="newBagMix" :items="mixChoices" :rules="practiceBagMixRules"
                 label="Practice Bag Composition"></v-select>
 
-            <v-slider min="1" :max="newBagMaxLength" label="How many tricks would you like in this bag?" :step="1" thumb-label="always"></v-slider>
+            <v-slider min="1" :max="newBagMaxLength" v-model="sliderNumber" label="How many tricks would you like in this bag?" :step="1" thumb-label="always"></v-slider>
 
             <v-sheet class="d-flex justify-center">
                 <v-btn type="submit" class="bg-green-lighten-1" width="300" text="Create" @click="validateForm()"></v-btn>
@@ -45,12 +45,13 @@ export default {
                 "A mix of In-Bag and In-Progress Tricks"
             ],
             newBagMix: "",
+            sliderNumber: 1,
 
             practiceBagMixRules: [
                 (value) => {
                     if (value?.length > 0) return true;
 
-                    return "Stance must not be left empty";
+                    return "Mix selection must not be left empty";
                 },
             ],
         }
@@ -99,17 +100,16 @@ export default {
         }
     },
 
-    // watch : {
-    //     newBagMix: function () {
-    //         this.newBagMaxLength
-    //     }
-
-    // },
-
     methods: {
         // Helper Methods
         errorHandler(error, verb) {
             console.log(`There was an error ${verb}, the error was: ${error}`);
+        },
+
+        sliderChange(e) {
+            this.sliderNumber = e;
+            console.log(e);
+            return this.sliderNumber
         },
 
         // Store methods
@@ -117,8 +117,24 @@ export default {
             this.$store.state.practiceBags = practiceBags;
         },
 
+
         generatePracticeBag() {
-            console.log("Here");
+            if (this.newBagMix === "In-Bag Tricks") {
+                this.grabRandomInBagTricks();
+            }
+
+            else if (this.newBagMix === "In-Progress Tricks") {
+                this.grabRandomInProgessTricks();
+            }
+
+            else if (this.newBagMix === "A mix of In-Bag and In-Progress Tricks") {
+                this.grabRandomMixTricks();
+            } 
+        },
+
+        grabRandomInBagTricks() {
+
+
         },
 
 
