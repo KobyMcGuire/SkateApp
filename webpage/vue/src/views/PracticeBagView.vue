@@ -9,6 +9,10 @@
 
             <v-slider min="1" :max="newBagMaxLength" v-model="sliderNumber" label="How many tricks would you like in this bag?" :step="1" thumb-label="always"></v-slider>
 
+            <v-sheet>
+                <trick-card v-for="trick in newPracticeBag" :key="trick.id" :trick="trick"></trick-card>
+            </v-sheet>
+
             <v-sheet class="d-flex justify-center">
                 <v-btn type="submit" class="bg-green-lighten-1" width="300" text="Create" @click="validateForm()"></v-btn>
             </v-sheet>
@@ -30,11 +34,12 @@
 <script>
 import PracticeBagService from '../services/PracticeBagService';
 import PracticeBagCard from '../components/PracticeBagCard.vue';
+import TrickCard from '../components/TrickCard.vue';
 import TrickService from '../services/TrickService';
 
 export default {
 
-    components: { PracticeBagCard },
+    components: { PracticeBagCard, TrickCard },
 
     data() {
         return {
@@ -46,6 +51,7 @@ export default {
             ],
             newBagMix: "",
             sliderNumber: 1,
+            newPracticeBag: [],
 
             practiceBagMixRules: [
                 (value) => {
@@ -133,17 +139,36 @@ export default {
         },
 
         grabRandomInBagTricks() {
+            let storeArray = this.$store.state.knownTricks;
+            let indicesSelected = [];
 
-
+            for (let i = 0; i < this.sliderNumber; i++) {
+                let indexSelected = Math.floor(Math.random() * storeArray.length);
+                if (indicesSelected.includes(indexSelected)) {
+                    i--;
+                    continue;
+                }
+                indicesSelected.push(indexSelected);
+                this.newPracticeBag.push(storeArray[indexSelected]);
+            }
         },
 
         grabRandomInProgessTricks() {
-            
+            let storeArray = this.$store.state.unknownTricks;
+            let indicesSelected = [];
 
+            for (let i = 0; i < this.sliderNumber; i++) {
+                let indexSelected = Math.floor(Math.random() * storeArray.length);
+                if (indicesSelected.includes(indexSelected)) {
+                    i--;
+                    continue;
+                }
+                indicesSelected.push(indexSelected);
+                this.newPracticeBag.push(storeArray[indexSelected]);
+            }
         },
 
         grabRandomMixTricks() {
-            
 
         },
 

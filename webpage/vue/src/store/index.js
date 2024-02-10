@@ -7,11 +7,13 @@ export function createStore(currentToken, currentUser) {
       token: currentToken || '',
       user: currentUser || {},
 
+      // For viewing of tricks in user's bags
       inBagTricks : [],
       inProgressTricks : [],
+      // For Practice Bag
       practiceBags: [],
-      unknownTricks : [],
       knownTricks : [],
+      unknownTricks : [],
       practiceBagsMap: new Map()
     },
 
