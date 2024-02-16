@@ -14,7 +14,6 @@ export function createStore(currentToken, currentUser) {
       practiceBags: [],
       knownTricks : [],
       unknownTricks : [],
-      practiceBagsMap: new Map()
     },
 
     mutations: {
