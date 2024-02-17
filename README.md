@@ -13,8 +13,9 @@ can be done by the user, otherwise, if a trick is in "In Progress Tricks", the u
 ## Practice Sessions
 
 This tool allows users to track and record their skate sessions. The user is given a randomly generated "Practice Bag" of tricks to take with them in to their session. 
-The user has a choice of whether the practice bag will contain only tricks that are in "Your Bag", or "In Progress Tricks". The user can also select to mix these two categories 
-together. The user then uses a slider to pick the number of tricks that they wish to have in this practice bag.
+The user has a choice of whether the practice bag will contain only tricks that are in "Your Bag", or, "In Progress Tricks". The user can also select to mix these two categories 
+together. The user then uses a slider to pick the number of tricks that they wish to have in this practice bag. All previously generated practice bags can be seen towards the
+bottom of the page.
 
 ## Line Generator
 
