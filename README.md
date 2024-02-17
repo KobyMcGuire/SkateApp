@@ -19,6 +19,7 @@ together. The user then uses a slider to pick the number of tricks that they wis
 ## Line Generator
 
 A tool that can be used when you are at a park, or skating in the streets! A user tells the application how many tricks they would like in the line, and what kinds of tricks 
-each one should be (Flat, Ledge, or Transition).
+each one should be (Flat, Ledge, or Transition). The application will then generate a line containing the specified types of tricks, pulling randomly from either the user's
+"In Bag" tricks, "In Progress" Tricks, or a mixture of the two.
 
 
