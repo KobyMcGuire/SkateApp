@@ -36,14 +36,14 @@ export default {
         tricks() {
             if (this.isKnown === 'Yes') {
                 return this.$store.state.inBagTricks.filter((trick) => {
-                    if (trick.name === null || trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
                         return true;
                     }
                 });
             }
             else {
                 return this.$store.state.inProgressTricks.filter((trick) => {
-                    if (trick.name === null || trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+                    if (trick.name.toLowerCase().includes(this.searchTerm.toLowerCase())) {
                         return true;
                     }
                 });
@@ -64,7 +64,8 @@ export default {
         errorHandler(error, verb) {
             console.log(`There was an error ${verb}, the error was: ${error}`);
         },
-        // Updating the store arrays in order to have the drag and drop happen instantly ... was having issues with data taking too long coming back from back-end
+
+        // Updating the store arrays in order to have the drag and drop happen instantly
         updateStoreAfterKnownChange() {
             // Changing to in-bag
             if (this.changeKnown === "Yes") {
@@ -97,12 +98,14 @@ export default {
                 .then((response) => {
                     TrickService.updateTrick(this.updateTrickId, { id: this.updateTrickId, name: response.data.name, flipOrShuv: response.data.flipOrShuv, stance: response.data.stance, known: this.changeKnown })
                         .then((response) => {
+                            if (response.status === 200) {
                             // Update store for dynamiac updating
                             this.updateStoreAfterKnownChange();
 
                             // Reset data variables
                             this.changeKnown = "";
                             this.updateTrickId = "";
+                            }
                         })
                         .catch((error) => {
                             this.errorHandler(error, "updating known on a trick");
@@ -145,9 +148,5 @@ export default {
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-.tricks-header {
-    text-align: center;
 }
 </style>
